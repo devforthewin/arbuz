@@ -5,7 +5,6 @@ namespace App\Service;
 
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 
 class KnigaService
@@ -26,6 +25,7 @@ class KnigaService
 
     public function getBooks(string $author)
     {
+        $start = microtime(true);
         $result = $this->cache->get("list_book_$author", function (ItemInterface $item) use ($author) {
             $item->expiresAfter(60 * 60 * 24);
 //            $item->tag(['books','list']);
